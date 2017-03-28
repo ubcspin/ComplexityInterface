@@ -1,0 +1,66 @@
+/*.App {
+  text-align: center;
+}
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 80px;
+}
+
+.App-header {
+  background-color: #222;
+  height: 150px;
+  padding: 20px;
+  color: white;
+}
+
+.App-intro {
+  font-size: large;
+}
+
+@keyframes App-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+*/
+
+/* Paul add */
+.explanation {
+    /*position: relative;
+    left: 25px;*/
+}
+.rating {
+    /*position: relative;*/
+    text-align: center;
+    /*left:10px;*/
+    width: 50px;
+    margin-right:10px;
+    margin-left:10px;
+}
+#container {
+  padding:100px;
+  width: 20em;
+}
+
+fieldset {
+    display: block;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+    -webkit-padding-before: 0em;
+    -webkit-padding-start: 0em;
+    -webkit-padding-end: 0em;
+    -webkit-padding-after: 2em;
+    min-width: -webkit-min-content;
+    border-width: 0px;
+    border-style: groove;
+    border-color: threedface;
+    border-image: initial;
+}
+
+legend {
+  padding-bottom: 1em;
+}
+
+/*.inner_content {*/
+  /*width: 25em;*/
+/*}*/
