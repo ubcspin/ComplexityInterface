@@ -7,7 +7,6 @@
     "bootstrap": "^3.3.7",
     "express": "^4.15.2",
     "johnny-five": "^0.10.6",
-    "node-core-audio": "^0.5.1",
     "path": "^0.12.7",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
