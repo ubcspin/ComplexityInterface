@@ -35,7 +35,7 @@ io.on('connection', function (socket) {
     console.log(data);
   });
   socket.on('robot', function(behaviour) {
-    doRobotMotion(behaviour);
+    doRobotMotion(behaviour); // stub
   })
 });
 
@@ -114,11 +114,11 @@ board.on("ready", function() {
 
 var behaviour_00 = sineBehaviour();
 var behaviour_01 = randomBehaviour();
-var behaviour_02 = sineBehaviour();
-var behaviour_03 = sineBehaviour();
-var behaviour_04 = sineBehaviour();
-var behaviour_05 = sineBehaviour();
-var behaviour_06 = sineBehaviour();
+var behaviour_02 = randomBehaviour();
+var behaviour_03 = randomBehaviour();
+var behaviour_04 = randomBehaviour();
+var behaviour_05 = randomBehaviour();
+var behaviour_06 = randomBehaviour();
 var behaviour_07 = sineBehaviour();
 var behaviour_08 = sineBehaviour();
 var behaviour_09 = sineBehaviour();
@@ -176,7 +176,7 @@ function doMotor() {
   tick();
   var pos = getPosition(frame)
   servo.to(pos);
-  console.log(pos);
+  //console.log(pos);
 }
 
 // Tick the clock, mod to maxframe
@@ -197,9 +197,11 @@ function getPosition(f) {
 // Weighting function
 function getWeight(f) {
   if (easeIn) {
+    console.log('playing weird behaviour');
     return (f / maxframe);
   } 
   else if (easeOut) {
+    console.log('playing weird behaviour');
     return (1.0 - (f / maxframe));
   }
   else {
@@ -210,16 +212,30 @@ function getWeight(f) {
 // set a timeout to change the behaviour
 // b : index of behaviour to mix in
 function doRobotMotion(b) {
-  console.log(behaviour);
-  var r = Math.random() * (30 * 1000);
+  console.log(b);
+  var r = Math.random() * (15 * 1000);
   mix_behaviour = behaviours[b];
   setTimeout(function(){
-    // frame = 0;
+    frame = 0;
     // mix = true;
     easeIn = true;
     easeOut = false;
   }, r);
 
+  setTimeout(function(){
+    frame = 0;
+    // mix = true;
+    easeIn = false;
+    easeOut = true;
+  }, r + (10 * 1000));
+
+
+  setTimeout(function(){
+    frame = 0;
+    // mix = true;
+    easeIn = false;
+    easeOut = false;
+  }, r + (12 * 1000));
   // setTimeout(function(){
   //   mix = true;
   // }, r);
