@@ -9,12 +9,12 @@ import './App.css';
 const io = require('socket.io-client')  
 const socket = io.connect("http://localhost:8080");
 
-var tone1 = new Audio('audio/tone1.mp3');
-var tone2 = new Audio('audio/tone2.mp3');
+// var tone1 = new Audio('audio/tone1.mp3');
+// var tone2 = new Audio('audio/tone2.mp3');
 
-var inst_1 = new Audio('audio/v_instruction_01.mp3');
-var inst_2 = new Audio('audio/v_instruction_02.mp3');
-var inst_3 = new Audio('audio/v_instruction_03.mp3');
+var inst_1 = new Audio('audio/instruction01.mp3');
+var inst_2 = new Audio('audio/instruction02.mp3');
+var inst_3 = new Audio('audio/instruction03.mp3');
 
 class App extends Component {
 
@@ -58,7 +58,7 @@ class App extends Component {
   submit(data) {
       socket.emit("data", data);
       console.log("rating complete");
-      tone1.play();
+      // tone1.play();
 
       this.setState({
         recordings: this.state.recordings.concat([data]),
@@ -83,7 +83,7 @@ class App extends Component {
 
       socket.emit("data", 'done recording');
       console.log("recording complete");
-      tone1.play();
+      // tone1.play();
       
       this.setState({
         form: false,
