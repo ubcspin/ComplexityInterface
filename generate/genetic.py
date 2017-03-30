@@ -11,6 +11,8 @@ import random
 import numpy as np
 import pprint
 import entropy as ent
+import sampen2 as se2
+import datetime 
 
 def rand_ind(min, max):
     return random.uniform(min,max)
@@ -30,6 +32,7 @@ def population(count, length, min, max):
     max: the max possible value in an individual's list of values
 
     """
+    print('Generating population of size %d...' % (count))
     return [ individual(length, min, max) for x in range(count) ]
 
 
@@ -42,9 +45,9 @@ def fitness(individual, target):
     """
 
     tolerance = 0.2 * np.std(individual)
-    se = ent.sample_entropy(individual, 2)
+    se = se2.sampen2(individual, 2, r=np.std(individual))
 
-    return abs(target - np.average(se))
+    return abs(target - np.average([x[2] for x in se]))
 
 
 def avg_grade(pop, target):
@@ -70,10 +73,11 @@ def kill(pop, target, retain, random_select):
 
     # assign a fitness to each individual in a population
     graded = [ (fitness(i, target), i) for i in pop ]
+    
     # sort by grade, then unpack the individual
     graded = [ x[1] for x in sorted(graded) ]
 
-    # kill off the lowest 1-retain percent of population
+    # kill off the lowest (1 - retain) percent of population
     retain_length = int(len(graded)*retain)
     parents = graded[:retain_length]
 
@@ -100,10 +104,13 @@ def mutate(pop, mutate_prob):
 
 
 def evolve(pop, target, retain=0.2, random_select=0.05, mutate_prob=0.01):
+    print('Killing off individuals with fitness less than %f of population max...' % (retain))
     parents = kill(pop, target, retain, random_select)
+    print('Mutating with %f probability...' % (mutate_prob))
     parents = mutate(parents, mutate_prob)
 
     # crossover parents to create children
+    print('Mixing for next generation...')
     parents_length = len(parents)
     desired_length = len(pop) - parents_length
     children = []
@@ -117,6 +124,8 @@ def evolve(pop, target, retain=0.2, random_select=0.05, mutate_prob=0.01):
             half = int(len(male) / 2)
             child = male[:half] + female[half:]
             children.append(child)
+        # else:
+            # print("Miss!")
 
     parents.extend(children)
     return parents
@@ -136,26 +145,35 @@ def main():
     and examine several r values before selecting your parameters.
     '''
 
-    target = 50 # target utility value, sample entropy right now
+    target = 0.25 # target utility value, sample entropy right now
 
     i_min = 0
     i_max = 1.0
 
-    individual_length = 100 # a.k.a N from above
-    population_size = 25
+    individual_length = 1000 # a.k.a N from above
+    population_size = 100
     num_iterations = 100
 
     p = population(population_size, individual_length, i_min, i_max)
     
-    fitness_history = [avg_grade(p, target),]
+    fitness_history = [(avg_grade(p, target),p)]
+    
+    # last_run = datetime.g
+    print('Starting generation...')
     for i in range(num_iterations):
         print("Running iteration", i)
         p = evolve(p, target)
-        fitness_history.append(avg_grade(p, target))
+        fitness_history.append((avg_grade(p, target),p))
 
     # print history
     for datum in fitness_history:
         print(datum)
+
+    print('Writing to file...')
+    outfile = open('log.txt', 'a+')
+    for datum in fitness_history:
+        pprint.pprint("Average grade: %f" % (datum[0]), stream=outfile)
+        pprint.pprint(datum[1], stream=outfile)
 
 
 if __name__ == '__main__':
