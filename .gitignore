@@ -84,3 +84,7 @@ pip-selfcheck.json
 
 # Logs
 logs/*.txt
+logfile*
+
+# Nohup
+*.out
