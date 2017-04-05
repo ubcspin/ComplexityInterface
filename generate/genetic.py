@@ -53,7 +53,7 @@ def fitness(individual, target):
     tolerance = 0.2 * np.std(individual)
     se = se2.sampen2(individual, 2, r=tolerance)
 
-    return abs(target - np.average([x[2] for x in se]))
+    return se[-1]
 
 
 def fitnesst(i, target):
@@ -90,7 +90,7 @@ def kill(pop, target, retain, random_select, pool):
     # sort by grade...
     sorted_graded_t = sorted(graded_t, key=lambda tup: tup[0])
 
-    print([x[0] for x in sorted_graded_t])
+    pprint.pprint([x[0] for x in sorted_graded_t])
     # then unpack the individual
     graded = [ x[1] for x in sorted_graded_t]
 
@@ -186,11 +186,12 @@ def main():
         fitness_history.append((avg_grade(p, target, pool),p))
 
     # print history
-    for datum in fitness_history:
-        print(datum[0])
+    # for datum in fitness_history:
+    #     print(datum[0])
 
     print('Writing to file...')
     outfile = open('log_' + str(math.floor(time.time())) + '.txt', 'a+')
+    
     for datum in fitness_history:
         pprint.pprint("Average grade: %f" % (datum[0]), stream=outfile)
         pprint.pprint(datum[1], stream=outfile)
