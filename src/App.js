@@ -9,9 +9,6 @@ import './App.css';
 const io = require('socket.io-client')  
 const socket = io.connect("http://localhost:8080");
 
-// var tone1 = new Audio('audio/tone1.mp3');
-// var tone2 = new Audio('audio/tone2.mp3');
-
 var inst_1 = new Audio('audio/instruction01.mp3');
 var inst_2 = new Audio('audio/instruction02.mp3');
 var inst_3 = new Audio('audio/instruction03.mp3');
@@ -101,7 +98,7 @@ class App extends Component {
     setTimeout(function() {
       // Alert server to start behaviour display routine
       socket.emit("robot", behaviour);
-    }.bind(this), 5000);
+    }.bind(this), 2000);
 
     //Display form
     setTimeout(function(){
