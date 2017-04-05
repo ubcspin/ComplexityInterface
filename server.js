@@ -16,11 +16,21 @@ var stream = fs.createWriteStream("./logs/logfile" + now.getTime() + '.txt');
 stream.on('error', console.error);
 
 function write(str) {
-  stream.write(str + '\n');
+  stream.write(str + '\n\n');
 }
+function log(obj) {
+  var now = new Date();
+  var ret = {
+    timestamp: now.getTime(), 
+    data: obj
+  }
+  var str = JSON.stringify(ret);
+  write(str);
+}
+// log({this:"is", 'complicated': 'no?', no:"it is", yes: [1,2,3,4]})
+// log({this:"is", 'complicated': 'no?', no:"it is", yes: [1,2,3,4]})
+
 //////////////////////////////////////////////////////////////////////
-
-
 
 
 //Here we are configuring express to use body-parser as middle-ware.
@@ -47,20 +57,30 @@ io.on('connection', function (socket) {
   console.log("You connected. Congrats.");
   // sendStarter();
   // socket.emit('news', { hello: 'world' });
+  log('connected')
+  socket.emit('init');
 
   socket.on('data', function (data) {
     console.log(data);
+    log(data)
   });
+
+  socket.on('start', function (data) {
+    console.log(data);
+    log(data)
+  });
+  
   socket.on('robot', function(behaviour) {
     doRobotMotion(behaviour); // stub
+    log(behaviour)
   })
+
 });
 
-
-//////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////
 // Motor 
 // 
-//////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////
 var boardOptions = {
   repl: false,
 }

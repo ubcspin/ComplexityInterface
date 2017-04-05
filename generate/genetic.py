@@ -85,11 +85,14 @@ def kill(pop, target, retain, random_select, pool):
     # assign a fitness to each individual in a population
     # graded = [ (fitness(i, target), i) for i in pop ]
 
-    graded = pool.map(partial(fitnesst, target=target), pop)
+    graded_t = pool.map(partial(fitnesst, target=target), pop)
 
-    
-    # sort by grade, then unpack the individual
-    graded = [ x[1] for x in sorted(graded) ]
+    # sort by grade...
+    sorted_graded_t = sorted(graded_t, key=lambda tup: tup[0])
+
+    print([x[0] for x in sorted_graded_t])
+    # then unpack the individual
+    graded = [ x[1] for x in sorted_graded_t]
 
     # kill off the lowest (1 - retain) percent of population
     retain_length = int(len(graded)*retain)
@@ -159,14 +162,14 @@ def main():
     and examine several r values before selecting your parameters.
     '''
 
-    target = 0.001 # target utility value, sample entropy right now
+    target = 1.5 # target utility value, sample entropy right now
 
     i_min = 0
     i_max = 1.0
 
-    individual_length = 1000 # a.k.a N from above
-    population_size = 20
-    num_iterations = 100
+    individual_length = 250 # a.k.a N from above
+    population_size = 1000
+    num_iterations = 5
 
     pool = Pool(25)
     

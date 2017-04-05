@@ -9,22 +9,33 @@ import './App.css';
 const io = require('socket.io-client')  
 const socket = io.connect("http://localhost:8080");
 
+var obj = {
+  recordings: [],
+  form: false,
+  transition: false,
+  introduction: true,
+  behaviourOrder: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
+  currentBehaviour: 1,
+  socket: socket
+}
+
+
+socket.on('init', function() {
+  socket.emit('data', );
+});
+
 var inst_1 = new Audio('audio/instruction01.mp3');
 var inst_2 = new Audio('audio/instruction02.mp3');
 var inst_3 = new Audio('audio/instruction03.mp3');
+
 
 class App extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      recordings: [],
-      form: false,
-      transition: false,
-      introduction: true,
-      behaviourOrder: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
-      currentBehaviour: 1
-    };
+    
+    this.state = obj;
+
     this.submit        = this.submit.bind(this);
     this.renderNext    = this.renderNext.bind(this);
     this.doneRecording = this.doneRecording.bind(this);
@@ -46,14 +57,19 @@ class App extends Component {
       transition: true,
     });
 
+    var send = JSON.stringify(this.state)
+    
+    this.state.socket.emit("start", send);
+
     this.nextBehaviour();
+
     this.startTrial(this.state.currentBehaviour); // stub for value
   };
 
 
   // Called when the submit button is clicked on the Likert scale question
   submit(data) {
-      socket.emit("data", data);
+      this.state.socket.emit("data", data);
       console.log("rating complete");
       // tone1.play();
 
@@ -78,7 +94,7 @@ class App extends Component {
   // This is the last thing in a trial, so we start the next one.
   doneRecording() {
 
-      socket.emit("data", 'done recording');
+      this.state.socket.emit("data", 'done recording');
       console.log("recording complete");
       // tone1.play();
       
@@ -97,7 +113,7 @@ class App extends Component {
 
     setTimeout(function() {
       // Alert server to start behaviour display routine
-      socket.emit("robot", behaviour);
+      this.state.socket.emit("robot", behaviour);
     }.bind(this), 2000);
 
     //Display form
