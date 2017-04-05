@@ -51,7 +51,7 @@ def fitness(individual, target):
     """
 
     tolerance = 0.2 * np.std(individual)
-    se = se2.sampen2(individual, 2, r=np.std(individual))
+    se = se2.sampen2(individual, 2, r=tolerance)
 
     return abs(target - np.average([x[2] for x in se]))
 
