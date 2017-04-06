@@ -17,6 +17,8 @@ import math
 from multiprocessing import Pool
 from functools import partial
 
+def rand_discrete(i):
+    return random.randint(0,999) * 0.001;
 
 def rand_ind(i, min, max):
     return random.uniform(min,max)
@@ -24,7 +26,7 @@ def rand_ind(i, min, max):
 def individual(length, min, max, pool):
     '''Create a member of the population.'''
     vec = [1 for x in range(length)]
-    out = pool.map(partial(rand_ind, min=min, max=max), vec)
+    out = pool.map(rand_discrete, vec)
     return out
 
 
@@ -53,7 +55,7 @@ def fitness(individual, target):
     tolerance = 0.2 * np.std(individual)
     se = se2.sampen2(individual, 2, r=tolerance)
 
-    return se[-1]
+    return se[-1][1]
 
 
 def fitnesst(i, target):
@@ -90,13 +92,13 @@ def kill(pop, target, retain, random_select, pool):
     # sort by grade...
     sorted_graded_t = sorted(graded_t, key=lambda tup: tup[0])
 
-    pprint.pprint([x[0] for x in sorted_graded_t])
+    # pprint.pprint([x[0] for x in sorted_graded_t])
     # then unpack the individual
     graded = [ x[1] for x in sorted_graded_t]
 
     # kill off the lowest (1 - retain) percent of population
     retain_length = int(len(graded)*retain)
-    parents = graded[:retain_length]
+    parents = graded[retain_length:]
 
     # randomly add other individuals to promote genetic diversity
     for individual in graded[retain_length:]:
@@ -168,8 +170,8 @@ def main():
     i_max = 1.0
 
     individual_length = 250 # a.k.a N from above
-    population_size = 1000
-    num_iterations = 5
+    population_size = 100
+    num_iterations = 50
 
     pool = Pool(25)
     
@@ -190,7 +192,7 @@ def main():
     #     print(datum[0])
 
     print('Writing to file...')
-    outfile = open('log_' + str(math.floor(time.time())) + '.txt', 'a+')
+    outfile = open('logs/log_' + str(math.floor(time.time())) + '.txt', 'a+')
     
     for datum in fitness_history:
         pprint.pprint("Average grade: %f" % (datum[0]), stream=outfile)

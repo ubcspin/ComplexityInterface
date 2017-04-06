@@ -33,7 +33,7 @@ spectrum = [np.around(x, decimals=3) for x in spectrum_0]
 
 all_waves = []
 acc = 0
-for i in range(0, 2):
+for i in range(0, 10):
     combinations = list(itertools.combinations(spectrum, i))
     # superpositions = [np.sum(k, axis=0) for k in combinations]
     superpositions = pool.map(partial(np.sum, axis=0), combinations)
@@ -44,9 +44,13 @@ for i in range(0, 2):
 print(acc)
 
 # outfile = open('wavelog.txt', 'w+')
-for wave in range(0, len(all_waves)):
-    fname = "waves/wave_" + str(wave)
-    np.save(fname, all_waves[wave])
+# for wave in range(0, len(all_waves)):
+fname = "waves/wavelog"
+np.savez_compressed(fname, *all_waves)
+
+# for w in all_waves:
+#     print(len(w))
+
     # all_waves[wave].tofile(fname)
     # outfile.write(str(wave))
     # outfile.write("\n")
