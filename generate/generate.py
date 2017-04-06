@@ -1,5 +1,5 @@
 import numpy as np
-import matplotlib.pylab as plt
+# import matplotlib.pylab as plt
 import pprint
 from sklearn.preprocessing import normalize
 import itertools
