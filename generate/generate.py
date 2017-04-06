@@ -7,7 +7,7 @@ import operator
 from multiprocessing import Pool
 from functools import partial
 
-pool = Pool(25)
+pool = Pool(2)
 
 Fs = 250
 # f = 25
@@ -15,8 +15,8 @@ sample = 250
 
 x = np.arange(sample)
 
-spectrum = [np.sin(2 * np.pi * f * x / Fs) for f in range(1,25)]
-
+spectrum_0 = [np.sin(2 * np.pi * f * x / Fs) for f in range(1,25)]
+spectrum = [np.around(x, decimals=3) for x in spectrum_0]
 # plt.plot(x, spectrum[0], 'r', x, spectrum[1], 'g', x, spectrum[2], 'b')
 # plt.xlabel('voltage(V)')
 # plt.ylabel('sample(n)')
@@ -33,20 +33,23 @@ spectrum = [np.sin(2 * np.pi * f * x / Fs) for f in range(1,25)]
 
 all_waves = []
 acc = 0
-for i in range(0, 25):
+for i in range(0, 2):
     combinations = list(itertools.combinations(spectrum, i))
     # superpositions = [np.sum(k, axis=0) for k in combinations]
     superpositions = pool.map(partial(np.sum, axis=0), combinations)
-    all_waves.append(superpositions)
+    all_waves += superpositions
     cnt = len(superpositions)
     acc += cnt
     print(cnt)
 print(acc)
 
-outfile = open('wavelog.txt', 'w+')
-for wave in all_waves:
-    outfile.write(wave)
-    outfile.write("\n")
-outfile.close()
+# outfile = open('wavelog.txt', 'w+')
+for wave in range(0, len(all_waves)):
+    fname = "waves/wave_" + str(wave)
+    np.save(fname, all_waves[wave])
+    # all_waves[wave].tofile(fname)
+    # outfile.write(str(wave))
+    # outfile.write("\n")
+# outfile.close()
 # plt.plot(x, superpositions[0+200], 'r', x, superpositions[1+200], 'g', x, superpositions[2+200], 'b')
 # plt.show()
