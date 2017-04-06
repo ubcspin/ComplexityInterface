@@ -31,17 +31,21 @@ spectrum = [np.sin(2 * np.pi * f * x / Fs) for f in range(1,25)]
 # k = (np.array([0, 0, 0]), np.array([1, 1, 0]), np.array([3, 3, 1]))
 # print(np.sum(k, axis=0))
 
+all_waves = []
 acc = 0
 for i in range(0, 25):
     combinations = list(itertools.combinations(spectrum, i))
     # superpositions = [np.sum(k, axis=0) for k in combinations]
     superpositions = pool.map(partial(np.sum, axis=0), combinations)
-    
-    
+    all_waves.append(superpositions)
     cnt = len(superpositions)
     acc += cnt
     print(cnt)
-
 print(acc)
+
+outfile = x
+for wave in all_waves:
+    outfile.write(wave)
+    outfile.write("\n")
 # plt.plot(x, superpositions[0+200], 'r', x, superpositions[1+200], 'g', x, superpositions[2+200], 'b')
 # plt.show()
