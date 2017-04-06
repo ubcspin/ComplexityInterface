@@ -43,9 +43,10 @@ for i in range(0, 25):
     print(cnt)
 print(acc)
 
-outfile = x
+outfile = open('wavelog.txt', 'w+')
 for wave in all_waves:
     outfile.write(wave)
     outfile.write("\n")
+outfile.close()
 # plt.plot(x, superpositions[0+200], 'r', x, superpositions[1+200], 'g', x, superpositions[2+200], 'b')
 # plt.show()
