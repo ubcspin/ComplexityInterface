@@ -9,19 +9,11 @@ import './App.css';
 const io = require('socket.io-client')  
 const socket = io.connect("http://localhost:8080");
 
-var obj = {
-  recordings: [],
-  form: false,
-  transition: false,
-  introduction: true,
-  behaviourOrder: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
-  currentBehaviour: 1,
-  socket: socket
-}
+
 
 
 socket.on('init', function() {
-  socket.emit('data', );
+  socket.emit('start', 'start');
 });
 
 var inst_1 = new Audio('audio/instruction01.mp3');
@@ -33,6 +25,16 @@ class App extends Component {
 
   constructor(props) {
     super(props);
+
+    var obj = {
+      recordings: [],
+      form: false,
+      transition: false,
+      introduction: true,
+      behaviourOrder: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
+      currentBehaviour: 1,
+      socket: socket
+    }
     
     this.state = obj;
 
@@ -57,7 +59,15 @@ class App extends Component {
       transition: true,
     });
 
-    var send = JSON.stringify(this.state)
+    var send_0 = {
+      'recordings': this.state.recordings,
+      'form': this.state.form,
+      'transition': this.state.transition,
+      'introduction': this.state.introduction,
+      'behaviourOrder': this.state.behaviourOrder,
+      'currentBehaviour': this.state.currentBehaviour
+    }
+    var send = JSON.stringify(send_0)
     
     this.state.socket.emit("start", send);
 
