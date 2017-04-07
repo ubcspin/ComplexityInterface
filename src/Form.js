@@ -21,6 +21,7 @@ class Form extends Component {
     this.props.submit(data);
   };
 
+
   render() {
     return (
       <div id="container">
@@ -63,6 +64,8 @@ class Form extends Component {
               </fieldset>
               </form>
               <button className="btn btn-primary" onClick={this.submit.bind(null, this.state)}>Submit</button>
+              &nbsp;&nbsp;&nbsp;
+              <button className="btn btn-primary" onClick={this.props.replay}>Replay</button>
             </div>
       </div>
     );
