@@ -92,8 +92,6 @@ board.on("ready", function() {
   start();
 });
 
-
-
 // The base behaviour to play constantly
 var base_behaviour = behaviours.behaviours[0];
 
@@ -159,8 +157,10 @@ function getWeight(f) {
 // b : index of behaviour to mix in
 function doRobotMotion(b) {
   console.log(b);
-  var r = Math.random() * (15 * 1000);
+
+  var r = 0.2 * (15 * 1000);
   mix_behaviour = behaviours.behaviours[b];
+
   setTimeout(function(){
     frame = 0;
     // mix = true;

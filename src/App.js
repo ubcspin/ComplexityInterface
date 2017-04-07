@@ -43,6 +43,7 @@ class App extends Component {
     this.doneRecording = this.doneRecording.bind(this);
     this.nextBehaviour = this.nextBehaviour.bind(this);
     this.start         = this.start.bind(this);
+    this.replay        = this.replay.bind(this);
 
     // this.doRobotMotion = this.doRobotMotion.bind(this); -- delete???
     // this.displayForm = this.displayForm.bind(this);
@@ -59,6 +60,11 @@ class App extends Component {
       transition: true,
     });
 
+    console.log(this.state.currentBehaviour);
+
+
+
+
     var send_0 = {
       'recordings': this.state.recordings,
       'form': this.state.form,
@@ -74,6 +80,7 @@ class App extends Component {
     this.nextBehaviour();
 
     this.startTrial(this.state.currentBehaviour); // stub for value
+
   };
 
 
@@ -81,7 +88,8 @@ class App extends Component {
   submit(data) {
       this.state.socket.emit("data", data);
       console.log("rating complete");
-      // tone1.play();
+      inst_1.pause();
+      inst_1.currentTime = 0;
 
       this.setState({
         recordings: this.state.recordings.concat([data]),
@@ -91,6 +99,12 @@ class App extends Component {
 
       this.promptVoiceover();
   };
+
+  replay() {
+    console.log(this.state.currentBehaviour - 1);
+    // Alert server to start behaviour display routine
+    socket.emit("robot", this.state.currentBehaviour - 1);
+  }
 
   // Called after submit is clicked on Likert scale form
   promptVoiceover() {
@@ -106,7 +120,6 @@ class App extends Component {
 
       this.state.socket.emit("data", 'done recording');
       console.log("recording complete");
-      // tone1.play();
       
       this.setState({
         form: false,
@@ -114,16 +127,22 @@ class App extends Component {
       });
 
     this.nextBehaviour();
-    this.startTrial(this.state.currentBehaviour); // stub for value
+    this.startTrial();
   };
 
-  startTrial(behaviour) {
+  startTrial() {
 
     // setTimeout(this.doRobotMotion(this.nextBehaviour()).bind(this), 10000);
 
+    console.log(this.state.currentBehaviour);
     setTimeout(function() {
       // Alert server to start behaviour display routine
+
+
+
+
       this.state.socket.emit("robot", behaviour);
+
     }.bind(this), 2000);
 
     //Display form
@@ -147,6 +166,7 @@ class App extends Component {
     if (behaviours.length > current_i) {
       current = behaviours[current_i + 1];
       this.setState({currentBehaviour: current});
+
       return current
     }
     return current; // should only run if the array runs out...
@@ -154,13 +174,13 @@ class App extends Component {
 
   renderNext() {
     if (this.state.form === true) {
-      return (<Form submit={this.submit} />)  
+      return (<Form submit={this.submit} replay={this.replay} />)
     } else if (this.state.transition === true){
       return (<Transition />)
     } else if (this.state.introduction === true) {
       return (<Introduction start={this.start} />)
     } else {
-      return (<Record doneRecording={this.doneRecording} />)
+      return (<Record doneRecording={this.doneRecording} replay={this.replay} />)
     }   
   };
 
