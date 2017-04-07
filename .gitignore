@@ -81,3 +81,12 @@ pip-selfcheck.json
 
 # Apple
 .DS_Store
+
+# Logs
+logs/*.txt
+logfile*
+generate/logs/log*.txt
+
+
+# Nohup
+*.out

@@ -12,17 +12,25 @@ import numpy as np
 import pprint
 import entropy as ent
 import sampen2 as se2
-import datetime 
+import time
+import math
+from multiprocessing import Pool
+from functools import partial
 
-def rand_ind(min, max):
+def rand_discrete(i):
+    return random.randint(0,999) * 0.001;
+
+def rand_ind(i, min, max):
     return random.uniform(min,max)
 
-def individual(length, min, max):
+def individual(length, min, max, pool):
     '''Create a member of the population.'''
-    return [ rand_ind(min, max) for x in range(length) ]
+    vec = [1 for x in range(length)]
+    out = pool.map(rand_discrete, vec)
+    return out
 
 
-def population(count, length, min, max):
+def population(count, length, min, max, pool):
     """
     Create a number of individuals (i.e. a population).
 
@@ -33,7 +41,7 @@ def population(count, length, min, max):
 
     """
     print('Generating population of size %d...' % (count))
-    return [ individual(length, min, max) for x in range(count) ]
+    return [ individual(length, min, max, pool) for x in range(count) ]
 
 
 def fitness(individual, target):
@@ -45,23 +53,28 @@ def fitness(individual, target):
     """
 
     tolerance = 0.2 * np.std(individual)
-    se = se2.sampen2(individual, 2, r=np.std(individual))
+    se = se2.sampen2(individual, 2, r=tolerance)
 
-    return abs(target - np.average([x[2] for x in se]))
+    return se[-1][1]
 
 
-def avg_grade(pop, target):
-    'Find average fitness for a population.'
-    summed = 0  
-    for i in [fitness(x, target) for x in pop]:
+def fitnesst(i, target):
+    return (fitness(i, target), i)
+
+def avg_grade(pop, target, pool):
+    '''Find average fitness for a population.'''
+    summed = 0
+    
+    evaluated = pool.map(partial(fitness, target=target), pop)
+
+    for i in evaluated:
         summed += i
     return summed / float(len(pop))
 
 
-def kill(pop, target, retain, random_select):
+def kill(pop, target, retain, random_select, pool):
     '''
-    
-    Take a population, kill off 1-retain percent, add back in some
+    Take a population, kill off (1 - retain) percent, add back in some
     random people, produce next set of parents.
 
     pop           : list of (list of int)
@@ -72,14 +85,20 @@ def kill(pop, target, retain, random_select):
     '''
 
     # assign a fitness to each individual in a population
-    graded = [ (fitness(i, target), i) for i in pop ]
-    
-    # sort by grade, then unpack the individual
-    graded = [ x[1] for x in sorted(graded) ]
+    # graded = [ (fitness(i, target), i) for i in pop ]
+
+    graded_t = pool.map(partial(fitnesst, target=target), pop)
+
+    # sort by grade...
+    sorted_graded_t = sorted(graded_t, key=lambda tup: tup[0])
+
+    # pprint.pprint([x[0] for x in sorted_graded_t])
+    # then unpack the individual
+    graded = [ x[1] for x in sorted_graded_t]
 
     # kill off the lowest (1 - retain) percent of population
     retain_length = int(len(graded)*retain)
-    parents = graded[:retain_length]
+    parents = graded[retain_length:]
 
     # randomly add other individuals to promote genetic diversity
     for individual in graded[retain_length:]:
@@ -98,14 +117,15 @@ def mutate(pop, mutate_prob):
             # restricts the range of possible values,
             # but the function is unaware of the min/max
             # values used to create the individuals,
-            individual[pos_to_mutate] = rand_ind(
+            individual[pos_to_mutate] = rand_ind(1, 
                 min(individual), max(individual))
     return pop
 
 
-def evolve(pop, target, retain=0.2, random_select=0.05, mutate_prob=0.01):
+def evolve(pop, target, pool, retain=0.2, random_select=0.05, mutate_prob=0.01):
     print('Killing off individuals with fitness less than %f of population max...' % (retain))
-    parents = kill(pop, target, retain, random_select)
+    parents = kill(pop, target, retain, random_select, pool)
+    
     print('Mutating with %f probability...' % (mutate_prob))
     parents = mutate(parents, mutate_prob)
 
@@ -118,15 +138,14 @@ def evolve(pop, target, retain=0.2, random_select=0.05, mutate_prob=0.01):
     while len(children) < desired_length:
         male = random.randint(0, parents_length-1)
         female = random.randint(0, parents_length-1)
+
         if male != female:
             male = parents[male]
             female = parents[female]
             half = int(len(male) / 2)
             child = male[:half] + female[half:]
             children.append(child)
-        # else:
-            # print("Miss!")
-
+            
     parents.extend(children)
     return parents
 
@@ -145,32 +164,36 @@ def main():
     and examine several r values before selecting your parameters.
     '''
 
-    target = 0.25 # target utility value, sample entropy right now
+    target = 1.5 # target utility value, sample entropy right now
 
     i_min = 0
     i_max = 1.0
 
-    individual_length = 1000 # a.k.a N from above
+    individual_length = 250 # a.k.a N from above
     population_size = 100
-    num_iterations = 100
+    num_iterations = 50
 
-    p = population(population_size, individual_length, i_min, i_max)
+    pool = Pool(25)
     
-    fitness_history = [(avg_grade(p, target),p)]
+    p = population(population_size, individual_length, i_min, i_max, pool)
+    
+    print("Doing average grade for current population...")
+    fitness_history = [(avg_grade(p, target, pool), p)]
     
     # last_run = datetime.g
     print('Starting generation...')
     for i in range(num_iterations):
         print("Running iteration", i)
-        p = evolve(p, target)
-        fitness_history.append((avg_grade(p, target),p))
+        p = evolve(p, target, pool)
+        fitness_history.append((avg_grade(p, target, pool),p))
 
     # print history
-    for datum in fitness_history:
-        print(datum)
+    # for datum in fitness_history:
+    #     print(datum[0])
 
     print('Writing to file...')
-    outfile = open('log.txt', 'a+')
+    outfile = open('logs/log_' + str(math.floor(time.time())) + '.txt', 'a+')
+    
     for datum in fitness_history:
         pprint.pprint("Average grade: %f" % (datum[0]), stream=outfile)
         pprint.pprint(datum[1], stream=outfile)

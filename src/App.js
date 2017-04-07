@@ -9,22 +9,35 @@ import './App.css';
 const io = require('socket.io-client')  
 const socket = io.connect("http://localhost:8080");
 
+
+
+
+socket.on('init', function() {
+  socket.emit('start', 'start');
+});
+
 var inst_1 = new Audio('audio/instruction01.mp3');
 var inst_2 = new Audio('audio/instruction02.mp3');
 var inst_3 = new Audio('audio/instruction03.mp3');
+
 
 class App extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {
+
+    var obj = {
       recordings: [],
       form: false,
       transition: false,
       introduction: true,
       behaviourOrder: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
-      currentBehaviour: 1
-    };
+      currentBehaviour: 1,
+      socket: socket
+    }
+    
+    this.state = obj;
+
     this.submit        = this.submit.bind(this);
     this.renderNext    = this.renderNext.bind(this);
     this.doneRecording = this.doneRecording.bind(this);
@@ -46,15 +59,34 @@ class App extends Component {
       introduction: false,
       transition: true,
     });
+
     console.log(this.state.currentBehaviour);
+
+
+
+
+    var send_0 = {
+      'recordings': this.state.recordings,
+      'form': this.state.form,
+      'transition': this.state.transition,
+      'introduction': this.state.introduction,
+      'behaviourOrder': this.state.behaviourOrder,
+      'currentBehaviour': this.state.currentBehaviour
+    }
+    var send = JSON.stringify(send_0)
+    
+    this.state.socket.emit("start", send);
+
     this.nextBehaviour();
-     this.startTrial(this.state.currentBehaviour); // stub for value
+
+    this.startTrial(this.state.currentBehaviour); // stub for value
+
   };
 
 
   // Called when the submit button is clicked on the Likert scale question
   submit(data) {
-      socket.emit("data", data);
+      this.state.socket.emit("data", data);
       console.log("rating complete");
       inst_1.pause();
       inst_1.currentTime = 0;
@@ -86,7 +118,7 @@ class App extends Component {
   // This is the last thing in a trial, so we start the next one.
   doneRecording() {
 
-      socket.emit("data", 'done recording');
+      this.state.socket.emit("data", 'done recording');
       console.log("recording complete");
       
       this.setState({
@@ -105,7 +137,11 @@ class App extends Component {
     console.log(this.state.currentBehaviour);
     setTimeout(function() {
       // Alert server to start behaviour display routine
-      socket.emit("robot", this.state.currentBehaviour);
+
+
+
+
+      this.state.socket.emit("robot", behaviour);
 
     }.bind(this), 2000);
 
