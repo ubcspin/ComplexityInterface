@@ -138,10 +138,7 @@ class App extends Component {
     setTimeout(function() {
       // Alert server to start behaviour display routine
 
-
-
-
-      this.state.socket.emit("robot", behaviour);
+      this.state.socket.emit("robot", this.state.currentBehaviour);
 
     }.bind(this), 2000);
 
