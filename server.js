@@ -102,7 +102,7 @@ var easeIn  = false;
 var easeOut = false;
 
 // Max number of frames before reset to zero
-var maxframe = 240;//240
+var maxframe = 1500;//240
 // Initialize the frame count
 var frame = 0;
 // Frames per second
@@ -145,7 +145,7 @@ function getWeight(f) {
     return (f / maxframe);
   } 
   else if (easeOut) {
-    console.log('playing weird behaviour');
+
     return (1.0 - (f / maxframe));
   }
   else {
@@ -173,7 +173,7 @@ function doRobotMotion(b) {
     // mix = true;
     easeIn = false;
     easeOut = true;
-  }, r + (10 * 1000));
+  }, r + (15 * 1000));
 
 
   setTimeout(function(){
@@ -181,7 +181,7 @@ function doRobotMotion(b) {
     // mix = true;
     easeIn = false;
     easeOut = false;
-  }, r + (12 * 1000));
+  }, r + (17 * 1000));
   // setTimeout(function(){
   //   mix = true;
   // }, r);

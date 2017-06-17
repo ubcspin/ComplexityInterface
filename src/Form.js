@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 
+var instruction;
+
 class Form extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      selectedOption: '-2'
+      selectedOption: '-2',
     }
     this.handleOptionChange = this.handleOptionChange.bind(this);
     this.submit = this.submit.bind(this);
@@ -21,10 +23,11 @@ class Form extends Component {
     this.props.submit(data);
   };
 
-
   render() {
+
     return (
-      <div id="container">
+      <div id="container" >
+        
       <h1 id="title">Please rate the robot's behaviour.</h1>
       <p id="instruction">Please indicate how <em>positive</em> or <em>negative</em> the robot's displayed behaviour seemed to you.</p>
       <div id="inner_content">
