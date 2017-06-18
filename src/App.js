@@ -159,7 +159,8 @@ class App extends Component {
         form: true
       });
 
-    }.bind(this), 20000);
+    // }.bind(this), 20); // CHANGE BACK TO 20000 #PAUL !!!
+  }.bind(this), 20000); 
 
   };
 
@@ -212,7 +213,11 @@ class App extends Component {
     } else if (this.state.introduction === true) {
       return (<Introduction start={this.start} />)
     } else if (this.state.review === true) {
-      return (<Review data={this.state.data}/>)
+      return (
+        <Review 
+           data={this.state.data} 
+           socket={this.state.socket}
+        />)
     } else {
         return (<Record doneRecording={this.doneRecording} replay={this.replay} />)
       }

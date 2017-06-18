@@ -42,6 +42,30 @@
   width: 35em;
 }
 
+.rev_col {
+  float:left;
+  margin-right:10px;
+  /*margin-bottom:5px;*/
+  width:150px;
+  /*background-color: blue;*/
+  padding: 5px;
+}
+.rev_row {
+  display: block;
+  margin-bottom: 20px;
+  height: 15px;
+}
+.button {
+  /*float:left;*/
+  border-right: #BBBBBB solid;
+  border-bottom: #BBBBBB solid;
+
+  background-color: #DDDDDD;
+}
+.button:hover {
+  background-color: #CCCCCC;
+}
+
 fieldset {
     display: block;
     -webkit-margin-start: 0px;
