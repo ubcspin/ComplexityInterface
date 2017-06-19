@@ -96,13 +96,14 @@ board.on("ready", function() {
 var base_behaviour = behaviours.behaviours[0];
 
 // The test behaviour to mix in 
-var mix_behaviour  = behaviours.behaviours[1];
+var mix_behaviour  = behaviours.behaviours[0];
 
 var easeIn  = false;
 var easeOut = false;
+var play = false;
 
 // Max number of frames before reset to zero
-var maxframe = 1500;//240
+var maxframe = 1500;//
 // Initialize the frame count
 var frame = 0;
 // Frames per second
@@ -134,19 +135,23 @@ function tick() {
 // Return position for this frame
 function getPosition(f) {
   var w = getWeight(f);
-  var pos = (w * base_behaviour[f]) + ((1.0 - w) * mix_behaviour[f]);
+  var pos = ( w * base_behaviour[f]) + ((1.0 - w) * mix_behaviour[f]);
+  // var pos = ( mix_behaviour[f]);
   return pos;
 }
 
 // Weighting function
 function getWeight(f) {
   if (easeIn) {
-    console.log('playing weird behaviour');
-    return (f / maxframe);
-  } 
+    // console.log('playing weird behaviour')
+    return (1.0 - (3*f / maxframe));
+  }
+  else if (play) {
+    return 0.0
+  }
   else if (easeOut) {
-
-    return (1.0 - (f / maxframe));
+    // console.log('playing weird behaviour');
+    return (f / maxframe);
   }
   else {
     return 1.0;
@@ -158,27 +163,35 @@ function getWeight(f) {
 function doRobotMotion(b) {
   console.log(b);
 
-  var r = 0.2 * (15 * 1000);
+  var r =  (6 * 1000);
   mix_behaviour = behaviours.behaviours[b];
 
-  setTimeout(function(){
+
     frame = 0;
     // mix = true;
     easeIn = true;
     easeOut = false;
-  }, r);
+    play = false;
+
+  setTimeout(function(){
+    easeIn = false;
+    easeOut = false;
+    play = true
+  }, r );
+
 
   setTimeout(function(){
     frame = 0;
     // mix = true;
     easeIn = false;
     easeOut = true;
+    play = false;
   }, r + (15 * 1000));
 
 
   setTimeout(function(){
     frame = 0;
-    // mix = true;
+    mix = true;
     easeIn = false;
     easeOut = false;
   }, r + (17 * 1000));

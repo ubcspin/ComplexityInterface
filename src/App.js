@@ -30,9 +30,9 @@ class App extends Component {
       transition: false,
       introduction: true,
       review: false,
-      // behaviourOrder: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
+      behaviourOrder: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
       // for testing:
-      behaviourOrder: [0,1,2,3],
+      // behaviourOrder: [0,1,2,3],
       currentBehaviour: 0, //the first behaviour is ignored purposely
       socket: socket,
       skip: false,
@@ -54,26 +54,42 @@ class App extends Component {
 
   };
 
+
   // Called when start button is pressed
   start() {
 
-    console.log("study starts");
-    console.log(this.state.currentBehaviour);
+    //randomize behaviour order:
+    var order = [0];
+    var temp = [1,2];
 
-    var send_0 = {
-      'recordings': this.state.recordings,
-      'form': this.state.form,
-      'transition': this.state.transition,
-      'introduction': this.state.introduction,
-      'behaviourOrder': this.state.behaviourOrder,
-      'currentBehaviour': this.state.currentBehaviour,
-      'review': this.state.review
+    while(temp.length > 0){
+      var rand = Math.floor(Math.random() * temp.length) + 0;
+      order.push(temp[rand]);
+      temp.splice(rand, 1);
+
+      console.log(temp.length);
     }
 
-    var send = JSON.stringify(send_0)
-    this.state.socket.emit("start", send);
+    this.setState({ behaviourOrder: order}, function () {
+      console.log(this.state.behaviourOrder);
+      console.log("study starts");
+      console.log(this.state.currentBehaviour);
 
-    this.nextBehaviour();
+      var send_0 = {
+        'recordings': this.state.recordings,
+        'form': this.state.form,
+        'transition': this.state.transition,
+        'introduction': this.state.introduction,
+        'behaviourOrder': this.state.behaviourOrder,
+        'currentBehaviour': this.state.currentBehaviour,
+        'review': this.state.review
+      }
+
+      var send = JSON.stringify(send_0)
+      this.state.socket.emit("start", send);
+
+      this.nextBehaviour();
+    });
 
   };
 
@@ -107,9 +123,9 @@ class App extends Component {
   };
 
   replay() {
-    console.log(this.state.currentBehaviour - 1);
+    console.log(this.state.currentBehaviour );
     // Alert server to start behaviour display routine
-    socket.emit("robot", this.state.currentBehaviour - 1);
+    socket.emit("robot", this.state.currentBehaviour );
   };
 
   // Called after submit is clicked on Likert scale form
@@ -145,7 +161,7 @@ class App extends Component {
     //start behaviour display routine
     setTimeout(function(){
       this.state.socket.emit("robot", this.state.currentBehaviour);
-    }.bind(this), 1500);
+    }.bind(this), 850);
 
     //Display form
     setTimeout(function(){
@@ -160,7 +176,7 @@ class App extends Component {
       });
 
     // }.bind(this), 20); // CHANGE BACK TO 20000 #PAUL !!!
-  }.bind(this), 20000); 
+  }.bind(this), 24000);
 
   };
 
@@ -171,6 +187,8 @@ class App extends Component {
     var current    = this.state.currentBehaviour; // int
     var current_i  = behaviours.indexOf(current); // int
 
+    console.log('current i = ' + current_i);
+    console.log('current behaviour = ' + current);
     if (behaviours.length > current_i + 1) {
 
       // start next behaviour trial
