@@ -107,7 +107,7 @@ var maxframe = 1500;//
 // Initialize the frame count
 var frame = 0;
 // Frames per second
-var fps = 60;
+var fps = 75;
 
 // Called when the server starts
 function start() {
@@ -120,8 +120,17 @@ function start() {
 function doMotor() {
   tick();
   var pos = getPosition(frame);
-  servo.to(pos);
-  //console.log(pos);
+  // if (pos % 5 === 0) {
+  //   servo.to(50);
+  //   console.log(50)
+  // } else {
+  //   servo.to(90);
+  //   console.log(90)
+  // }
+  if ((pos >= 0) && (pos <= 90)) {
+    servo.to(pos);
+    console.log(pos);
+  }
 }
 
 // Tick the clock, mod to maxframe
@@ -144,7 +153,7 @@ function getPosition(f) {
 function getWeight(f) {
   if (easeIn) {
     // console.log('playing weird behaviour')
-    return (1.0 - (3*f / maxframe));
+    return (0.5 - (f / maxframe));
   }
   else if (play) {
     return 0.0
@@ -163,7 +172,7 @@ function getWeight(f) {
 function doRobotMotion(b) {
   console.log(b);
 
-  var r =  (6 * 1000);
+  var r =  (3 * 1000);
   mix_behaviour = behaviours.behaviours[b];
 
 
@@ -186,7 +195,7 @@ function doRobotMotion(b) {
     easeIn = false;
     easeOut = true;
     play = false;
-  }, r + (15 * 1000));
+  }, r + (17 * 1000));
 
 
   setTimeout(function(){
@@ -194,7 +203,7 @@ function doRobotMotion(b) {
     mix = true;
     easeIn = false;
     easeOut = false;
-  }, r + (17 * 1000));
+  }, r + (19 * 1000));
   // setTimeout(function(){
   //   mix = true;
   // }, r);

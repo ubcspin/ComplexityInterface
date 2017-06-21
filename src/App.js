@@ -7,6 +7,7 @@ import Review from './Review';
 import logo from './logo.svg';
 import './App.css';
 
+
 const io = require('socket.io-client')  
 const socket = io.connect("http://localhost:8080");
 
@@ -25,18 +26,25 @@ class App extends Component {
     super(props);
 
     var obj = {
+
+      //work flow
       recordings: [],
       form: false,
       transition: false,
       introduction: true,
       review: false,
+
+      //behaviours
       behaviourOrder: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
       // for testing:
       // behaviourOrder: [0,1,2,3],
       currentBehaviour: 0, //the first behaviour is ignored purposely
+
+      trial: 0,
       socket: socket,
       skip: false,
-      data: [] //review behaviour table data
+      data: [], //review behaviour table data
+      spin: false
     }
     
     this.state = obj;
@@ -48,6 +56,8 @@ class App extends Component {
     this.start         = this.start.bind(this);
     this.replay        = this.replay.bind(this);
     this.togInst       = this.togInst.bind(this);
+    this.spinner       = this.spinner.bind(this);
+    this.playBehaviour = this.playBehaviour.bind(this);
 
     // this.doRobotMotion = this.doRobotMotion.bind(this); -- delete???
     // this.displayForm = this.displayForm.bind(this);
@@ -59,8 +69,8 @@ class App extends Component {
   start() {
 
     //randomize behaviour order:
-    var order = [0];
-    var temp = [1,2];
+    var order = [0,7,20];
+    var temp = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18];
 
     while(temp.length > 0){
       var rand = Math.floor(Math.random() * temp.length) + 0;
@@ -125,7 +135,7 @@ class App extends Component {
   replay() {
     console.log(this.state.currentBehaviour );
     // Alert server to start behaviour display routine
-    socket.emit("robot", this.state.currentBehaviour );
+    this.playBehaviour(this.state.currentBehaviour);
   };
 
   // Called after submit is clicked on Likert scale form
@@ -160,7 +170,7 @@ class App extends Component {
 
     //start behaviour display routine
     setTimeout(function(){
-      this.state.socket.emit("robot", this.state.currentBehaviour);
+      this.playBehaviour(this.state.currentBehaviour);
     }.bind(this), 850);
 
     //Display form
@@ -176,7 +186,7 @@ class App extends Component {
       });
 
     // }.bind(this), 20); // CHANGE BACK TO 20000 #PAUL !!!
-  }.bind(this), 24000);
+  }.bind(this), 23000);
 
   };
 
@@ -186,6 +196,7 @@ class App extends Component {
     var behaviours = this.state.behaviourOrder;   // array of int
     var current    = this.state.currentBehaviour; // int
     var current_i  = behaviours.indexOf(current); // int
+    var current_trial      = this.state.trial;
 
     console.log('current i = ' + current_i);
     console.log('current behaviour = ' + current);
@@ -197,7 +208,8 @@ class App extends Component {
         currentBehaviour: current,
         introduction: false,
         form: false,
-        transition: true
+        transition: true,
+        trial: current_trial + 1
       });
       this.startTrial();
       return current;
@@ -207,7 +219,8 @@ class App extends Component {
     this.setState({
       introduction: false,
       form: false,
-      review: true
+      review: true,
+      trial: ' '
     });
     return current; // should only run if the array runs out...
   };
@@ -235,11 +248,34 @@ class App extends Component {
         <Review 
            data={this.state.data} 
            socket={this.state.socket}
+           playBehaviour={this.playBehaviour}
         />)
     } else {
         return (<Record doneRecording={this.doneRecording} replay={this.replay} />)
       }
   };
+
+  playBehaviour(b) {
+
+    socket.emit("robot", b );
+    this.setState({
+      spin: true
+    });
+
+    setTimeout(function () {
+      this.setState({
+        spin: false
+      });
+
+    }.bind(this), 22150);
+  }
+
+  spinner() {
+    if (this.state.spin) {
+      return <div className="loader"></div>
+    }
+    return;
+  }
 
   render() {
     return (
@@ -249,9 +285,11 @@ class App extends Component {
         <div className="skip-inst" style={{float: 'right', padding: '30px'}}>
           <label className="skip-inst-label">
             <input onClick={this.togInst} className="skip-inst-input" type="checkbox"  checked={this.state.skip} />
-            <span className='instruct-label'>Skip Instruction</span>
+            <span className='instruct-label'>Mute Voice Instruction</span>
           </label> </div>
-        <p id="hash" style={{position: 'absolute', float:'left', color:'grey', padding: '30px', bottom:'0px'}}>{this.state.currentBehaviour}</p>
+        <p id="trial" style={{position: 'relative', float: 'left', padding: '30px', left: '46%'}}> Trial: {this.state.trial}/20 </p>
+        <p id="hash" style={{position: 'absolute', color:'grey', padding: '30px', bottom:'0px', fontSize: '32'}}> B{this.state.currentBehaviour}</p>
+        {this.spinner()}
         {this.renderNext()}
 
       </div>

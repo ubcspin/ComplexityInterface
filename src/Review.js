@@ -15,7 +15,8 @@ class Review extends Component {
         <div className="rev_row" key={Math.abs(hash * 13 * rating)}>
           <div className="rev_col">{hash}</div>
           <div className="rev_col">{rating}</div>
-          <div className="rev_col button" onClick={ () => this.props.socket.emit("robot", d['hash']) }>
+          {/*<div className="rev_col button" onClick={ () => this.props.socket.emit("robot", d['hash']) }>*/}
+          <div className="rev_col button" onClick={ () => this.props.playBehaviour(d['hash']) }>
             replay {hash}
           </div>
         </div>
