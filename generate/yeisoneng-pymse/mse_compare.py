@@ -7,7 +7,7 @@ with open('mse.csv', 'rb') as file:
 
 	for line in enumerate(reader):
 
-		x = line[0]
+		x = line[0] - 1
 		if x > 0:
 			row = line[1:][0][0]
 			row = [float(y) for y in row.split(',')]
