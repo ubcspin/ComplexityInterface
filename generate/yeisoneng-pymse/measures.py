@@ -173,30 +173,30 @@ def main():
 	#    # Test: white noise
 	# dataset = np.random.normal(loc = 0, scale = 20, size = Fs)
 
-	# # read the generated json file 
-	# data = open("29.json", "r").read()
-	# data = re.findall(r"[-+]?\d*\.\d+|\d+", data)
-	# data = list(map(float, data))
+	# read the generated json file 
+	data = open("behaviours/52.json", "r").read()
+	data = re.findall(r"[-+]?\d*\.\d+|\d+", data)
+	data = list(map(float, data))
 
 	# #normalize the position data
 	# # mean = reduce(lambda x, y: x+y, data) / len(data)
 	# # data = [x-mean for x in data]
 
-	# #get rid of the last few digits to make sure the length is 1500 
-	# dataset = np.asarray(data[: int(Fs)])
-	# # # #draw the waveform
-	# # print(len(dataset))
-	# Fs = len(dataset)
-	# x = np.linspace(0, Fs, Fs)
-	# plt.plot(x, dataset)
-	# plt.show()
+	#get rid of the last few digits to make sure the length is 1500 
+	dataset = np.asarray(data[: int(Fs)])
+	# # #draw the waveform
+	# print(len(dataset))
+	Fs = len(dataset)
+	x = np.linspace(0, Fs, Fs)
+	plt.plot(x, dataset)
+	plt.show()
 	# # calculate measures
 	# multi_se(dataset)
 	# variance(dataset)
 	# spectral_density(dataset, Fs)
 
 	# compare_psd(Fs)
-	compare_mse(Fs)
+	# compare_mse(Fs)
 	
 
 if __name__ == '__main__':

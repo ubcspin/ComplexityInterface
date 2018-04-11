@@ -120,14 +120,9 @@ function start() {
 function doMotor() {
   tick();
   var pos = getPosition(frame);
-  // if (pos % 5 === 0) {
-  //   servo.to(50);
-  //   console.log(50)
-  // } else {
-  //   servo.to(90);
-  //   console.log(90)
-  // }
-  if ((pos >= 0) && (pos <= 90)) {
+  var max = 180;
+  var min = 90;
+  if ((pos >= min) && (pos <= max)) {
     servo.to(pos);
     console.log(pos);
   }

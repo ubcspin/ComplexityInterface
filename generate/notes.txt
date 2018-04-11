@@ -1,0 +1,472 @@
+parameters:
+amp bias: 5 to purely pitch bias
+gain for amp: 0.204724
+scaleFactor: 0.795275
+reverse: true
+minFrequency: 99.094488
+maxFrequency: 1021.220472
+p: 1 to max
+i: 0
+d: 0
+r: 0
+
+measures:
+0 - random changes w/ small amplitude
+	MSE: increase in a logarithmic pattern [0.5, 1.9] - visualize it 
+	PSD slope: 2.2002
+	VAR: 0.33
+1 - random changes w/ small amplitude + few irregular decrease in amplitude (exhale)
+	MSE: linearly increase [0, 0.6] 
+	PSD slope: 2.3537
+	VAR: 41.01
+2 - imagine the bit is suffering from pain. Longer decrease in amplitude
+	MSE: linearly increase [0, 0.8] 
+	PSD slope: 2.3638
+	VAR: 213.69
+3 - more frequent decrease in amplitude
+	MSE: increase linearly [0, 0.6] 
+	PSD slope: 2.1399
+	VAR: 104.45
+4 - frequent, brief & irregular change in amplitude(some messy drum kind of sound)
+	MSE: increase till around scale 20, and then becomes more spreading. Drop to 1.6 at higher scale [0.4, 3.2] 
+	PSD slope: 2.1083
+	VAR: 101.49
+5 - frequent, continuous & irregular change (trumpet like sound) 
+	MSE: increase till around scale 20, then drop to 1.8 [0.4, 3.5] 
+	PSD slope: 2.1562
+	VAR: 84.89
+6 - sudden drop in amplitude, followed by continuous, small change in amplitude
+	MSE: increase logarithmically [0.2, 1.0] 
+	PSD slope: 2.0600
+	VAR: 107.27
+7 - played a 440hz continuous tone (but the wave looks periodic, with a lot of changes on peaks)
+	MSE: increase untill 11, and spread around 1.9, drop to 1.5 at the end [0.3, 2.3] 
+	PSD slope: 1.7770
+	VAR: 27.82
+8 - smooth changes with varying std (by singing continuously changing tones) 
+	MSE: gradually increase [0.2, 1.2] 
+	PSD slope: 2.2433
+	VAR: 92.45
+9 - quick and sudden changes with varying std (by singing continuously changing tones) 
+	MSE: gradually increase till scale 16, and then keep around 1.6 [0.3, 2.1] 
+	PSD slope: 2.1948
+	VAR: 84.91
+10 - continous change + sudden increase in std
+	MSE: gradually increase till scale 11, and then keep around 1.6 [0.2, 1.7] 
+	PSD slope: 2.0845
+	VAR: 58.33
+11 - a very sudden & brief decrease in amplitude
+	MSE: gradually increase till scale 16, and then keep around 0.6 [0.3, 0.6] 
+	PSD slope: 2.2542
+	VAR: 1.96
+12 - starts with frequent small changes, and ends with less frequent, brief changes
+	MSE: quickly increase [0.1, 1.6] 
+	PSD slope: 2.1973
+	VAR: 112.64
+
+
+Wheel Control:
+
+13 - somewhat regular & deep breathing
+	MSE: increase [0.0, 0.5] 
+	PSD slope: 2.0113
+	VAR: 171.98
+14 - small number of slow movement
+	MSE: increase [0.0, 0.3] 
+	PSD slope: 1.9366
+	VAR: 137.52
+15 - deep regular breath followed by irregular shallower breath
+	MSE: increase [0.0, 0.93] 
+	PSD slope: 2.1443
+	VAR: 420.88
+16 - rapid and irregular breath
+	MSE: increase till scale 26, then drop to 1.8[0.3, 2.0] 
+	PSD slope: 2.2201
+	VAR: 138.68
+17 - slow but irregular breathing
+	MSE: increase [0.0, 0.8] 
+	PSD slope: 2.3688
+	VAR: 261.62
+18 - surprising: no breath -> breath irregularly
+	MSE: increase [0.0, 0.04] 
+	PSD slope: 2.2927
+	VAR: 103.16
+19 - surprising movement with some randomness
+	MSE: bell-curve like [0.4, 0.8] 
+	PSD slope: 2.0727
+	VAR: 157.30
+20 - slow breath with some randomness
+	MSE: increase till scale 16, then drop to 1.08 [0.3, 1.45] 
+	PSD slope: 1.9699
+	VAR: 255.62
+21 - rapid breath with some randomness
+	MSE: increase till scale 16, then drop to 0.8 [0.3, 1.5] 
+	PSD slope: 1.9047
+	VAR: 446.20
+22 - slow -> fast with some randomness
+	MSE: increase [0.3, 1.5] 
+	PSD slope: 1.9741
+	VAR: 304.80
+23 - slow -> fast regular breath 
+	MSE: increase [0.1, 1.8] 
+	PSD slope: 2.3355
+	VAR: 390.08
+24 - fast -> very fast regular breath
+	MSE: increase [0.1, 2.1] 
+	PSD slope: 2.1987
+	VAR: 390.48
+25 - fast -> very fast with randomness (8)
+	MSE: increase [0.3, 1.6] 
+	PSD slope: 2.0397
+	VAR: 422.79
+26 - quick regular breath
+	MSE: increase [0.5, 1.6] 
+	PSD slope: 1.6795
+	VAR: 337.88
+27 - quick breath with a sudden change in middle
+	MSE: increase, but not tight [0.5, 2.5] 
+	PSD slope: 1.8317
+	VAR: 339.79
+28 - slow -> quick breath with small changes on peaks
+	MSE: increase [0.1, 1.25] 
+	PSD slope: 2.1460
+	VAR: 576.44
+29 - breathing with a cease in between
+	MSE: increase [0.0, 0.4] 
+	PSD slope: 2.0989
+	VAR: 350.51
+30 - breathing with irregular ceases in between, sudden increase in speed
+	MSE: quickly increase [0.0, 1.9] 
+	PSD slope: 2.2874
+	VAR: 449.75
+31 - slow irregular breathing with irregular ceases in between, and ocassionally small changes 
+	MSE: increase [0.0, 1.2] 
+	PSD slope: 2.1781
+	VAR: 569.64
+32 - quick irregular breathing with irregular ceases in between, and ocassionally small changes 
+	MSE: increase [0.0, 1.9] 
+	PSD slope: 2.1684
+	VAR: 486.42
+33 - slow breathing with small changes on peaks
+	MSE: increase[0.0, 1.4] 
+	PSD slope: 2.1492
+	VAR: 490.24
+34 - sinusoidal wave w/ frequency of 50
+	MSE: irregular, around 0.1 at higher scale[0.0, 0.4] 
+	PSD slope: 0.8203
+	VAR: 480.5
+35 - white noise 
+	MSE: decrease, end with 0.8 [0.8, 2.5] 
+	PSD slope: 0.0124
+	VAR: 409.21
+
+For changes in frequency:
+36 - constant speed (moderate)
+37 - smaller changes in speed (fast)
+38 - small speed changes but not periodical (fast)
+till 43
+
+For surprise:
+44
+
+
+
+
+
+
+MSE Ranks: - changes in frequency of changes matters the most
+
+18 - surprising: no breath -> breath irregularly
+	MSE: increase [0.0, 0.04] 
+
+34 - sinusoidal wave w/ frequency of 50
+	MSE: irregular, around 0.1 at higher scale[0.0, 0.4] 
+
+14 - small number of slow movement
+	MSE: increase [0.0, 0.3] 
+
+29 - breathing with a cease in between
+	MSE: increase [0.0, 0.4] 
+
+19 - surprising movement with some randomness
+	MSE: bell-curve like, end with 0.4 [0.4, 0.8] 
+
+13 - somewhat regular & deep breathing
+	MSE: increase [0.0, 0.5] 
+
+1 - random changes w/ small amplitude + few irregular decrease in amplitude (exhale)
+	MSE: linearly increase [0, 0.6] 
+
+3 - more frequent decrease in amplitude
+	MSE: increase linearly [0, 0.6] 
+
+11 - a very sudden & brief decrease in amplitude
+	MSE: gradually increase till scale 16, and then keep around 0.6 [0.3, 0.6] 
+
+2 - imagine the bit is suffering from pain. Longer decrease in amplitude
+	MSE: linearly increase [0, 0.8] 
+
+17 - slow but irregular breathing
+	MSE: increase [0.0, 0.8] 
+
+35 - white noise 
+	MSE: decrease, end with 0.8 [0.8, 2.5] 
+
+21 - rapid breath with some randomness
+	MSE: increase till scale 16, then drop to 0.8 [0.3, 1.5] 
+
+15 - deep regular breath followed by irregular shallower breath
+	MSE: increase [0.0, 0.93] 
+
+6 - sudden drop in amplitude, followed by continuous, small change in amplitude
+	MSE: increase logarithmically [0.2, 1.0] 
+
+20 - slow breath with some randomness
+	MSE: increase till scale 16, then drop to 1.08 [0.3, 1.45] 
+
+31 - slow irregular breathing with irregular ceases in between, and ocassionally small changes 
+	MSE: increase [0.0, 1.2] 
+
+8 - smooth changes with varying std (by singing continuously changing tones) 
+	MSE: gradually increase [0.2, 1.2] 
+
+28 - slow -> quick breath with small changes on peaks
+	MSE: increase [0.1, 1.25] 
+
+33 - slow breathing with small changes on peaks
+	MSE: increase[0.0, 1.4] 
+
+22 - slow -> fast with some randomness
+	MSE: increase [0.3, 1.5] 
+
+7 - played a 440hz continuous tone (but the wave looks periodic, with a lot of changes on peaks)
+	MSE: increase untill 11, and spread around 1.9, drop to 1.5 at the end [0.3, 2.3] 
+
+25 - fast -> very fast with randomness (8)
+	MSE: increase [0.3, 1.6] 
+
+26 - quick regular breath
+	MSE: increase [0.5, 1.6] 
+
+12 - starts with frequent small changes, and ends with less frequent, brief changes
+	MSE: quickly increase [0.1, 1.6] 
+
+9 - quick and sudden changes with varying std (by singing continuously changing tones) 
+	MSE: gradually increase till scale 16, and then keep around 1.6 [0.3, 2.1] 
+
+10 - continous change + sudden increase in std
+	MSE: gradually increase till scale 11, and then keep around 1.6 [0.2, 1.7] 
+
+4 - frequent, brief & irregular change in amplitude(some messy drum kind of sound)
+	MSE: increase till around scale 20, and then becomes more spreading. Drop to 1.6 at higher scale [0.4, 3.2] 
+
+16 - rapid and irregular breath
+	MSE: increase till scale 26, then drop to 1.8[0.3, 2.0] 
+
+23 - slow -> fast regular breath 
+	MSE: increase [0.1, 1.8] 
+
+5 - frequent, continuous & irregular change (trumpet like sound) 
+	MSE: increase till around scale 20, then drop to 1.8 [0.4, 3.5] 
+
+30 - breathing with irregular ceases in between, sudden increase in speed
+	MSE: quickly increase [0.0, 1.9] 
+
+32 - quick irregular breathing with irregular ceases in between, and ocassionally small changes 
+	MSE: increase [0.0, 1.9] 
+
+0 - random changes w/ small amplitude
+	MSE: increase in a logarithmic pattern [0.5, 1.9] 
+
+24 - fast -> very fast regular breath
+	MSE: increase [0.1, 2.1] 
+
+27 - quick breath with a sudden change in middle
+	MSE: increase, but not tight [0.5, 2.5] 
+
+
+
+
+
+
+
+
+PSD Slope rank: randomness decreases PSD slope, suprise matters
+
+35 - white noise 
+	PSD slope: 0.0124
+
+34 - sinusoidal wave w/ frequency of 50
+	PSD slope: 0.8203
+
+26 - quick regular breath
+	PSD slope: 1.6795
+
+7 - played a 440hz continuous tone (but the wave looks periodic, with a lot of changes on peaks)
+	PSD slope: 1.7770
+
+27 - quick breath with a sudden change in middle
+	PSD slope: 1.8317
+
+21 - rapid breath with some randomness
+	PSD slope: 1.9047
+
+14 - small number of slow movement
+	PSD slope: 1.9366
+
+20 - slow breath with some randomness
+	PSD slope: 1.9699
+
+22 - slow -> fast with some randomness
+	PSD slope: 1.9741
+
+13 - somewhat regular & deep breathing
+	PSD slope: 2.0113
+
+25 - fast -> very fast with randomness (8)
+	PSD slope: 2.0397
+
+6 - sudden drop in amplitude, followed by continuous, small change in amplitude
+	PSD slope: 2.0600
+
+19 - surprising movement with some randomness
+	PSD slope: 2.0727
+
+10 - continous change + sudden increase in std
+	PSD slope: 2.0845
+
+29 - breathing with a cease in between
+	PSD slope: 2.0989
+
+4 - frequent, brief & irregular change in amplitude(some messy drum kind of sound)
+	PSD slope: 2.1083
+
+3 - more frequent decrease in amplitude
+	PSD slope: 2.1399
+
+15 - deep regular breath followed by irregular shallower breath
+	PSD slope: 2.1443
+
+28 - slow -> quick breath with small changes on peaks
+	PSD slope: 2.1460
+
+33 - slow breathing with small changes on peaks
+	PSD slope: 2.1492
+
+5 - frequent, continuous & irregular change (trumpet like sound) 
+	PSD slope: 2.1562
+
+32 - quick irregular breathing with irregular ceases in between, and ocassionally small changes 
+	PSD slope: 2.1684
+
+31 - slow irregular breathing with irregular ceases in between, and ocassionally small changes 
+	PSD slope: 2.1781
+
+9 - quick and sudden changes with varying std (by singing continuously changing tones) 
+	PSD slope: 2.1948
+
+12 - starts with frequent small changes, and ends with less frequent, brief changes
+	PSD slope: 2.1973
+
+24 - fast -> very fast regular breath
+	PSD slope: 2.1987
+
+0 - random changes w/ small amplitude
+	PSD slope: 2.2002
+
+16 - rapid and irregular breath
+	PSD slope: 2.2201
+
+8 - smooth changes with varying std (by singing continuously changing tones) 
+	PSD slope: 2.2433
+
+11 - a very sudden & brief decrease in amplitude
+	PSD slope: 2.2542
+
+30 - breathing with irregular ceases in between, sudden increase in speed
+	PSD slope: 2.2874
+
+18 - surprising: no breath -> breath irregularly
+	PSD slope: 2.2927
+
+23 - slow -> fast regular breath 
+	PSD slope: 2.3355
+
+1 - random changes w/ small amplitude + few irregular decrease in amplitude (exhale)
+	PSD slope: 2.3537
+
+2 - imagine the bit is suffering from pain. Longer decrease in amplitude
+	PSD slope: 2.3638
+
+17 - slow but irregular breathing
+	PSD slope: 2.3688
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	High in PSD but low in MSE:
+	- Surprising: no breath -> sudden irregular breath
+	- Small, random changes + few sudden decreases on ampliitude
+	- Small, random changes + several continous decreases in between
+	- Infrequent/slow & ceases in between & big fluctuation
+	- Very sudden, brief decrease in amplitude
+
+	High in MSE but low in PSD:
+	- Rapid, frequent movement & a sudden change in middle
+	- Rapid, regular breath
+	- Fast -> very fast movement, with randomness
+	- Quick, small fluctuation with few increases on amplitude
+
+	High in both PSD and MSE:
+	- Fast -> very fast movement (changes in frequency over time)
+	- Frequent movement + Irregular ceases + increase in frequency over time
+	- Slow -> fast movement
+	- Slight, random changes on amplitude
+	- Rapid, continuous fluctuation
+
+	Low in both PSD and MSE:
+	- Sine wave with frequency at 50
+	- Irregular, slow movement
+	- White noise 
+	- Rapid breath with some randomness
+
+
+
+
+
+	Schemas to increase complexity:
+	- Surprise: sudden changes (works for PSD)
+	- Changes in std over time (mid level of complexity in both)
+	- Changes in frequency over time (works for both measures)
+	- Add changes to part of regular waves (didn't see much influence) 
+	- Continuous changes vs. brief changes (didn't see much evidence yet)
+	- Frequent changes vs. infrequent changes / speed of the movement/ number of keyframes (Frequent changes work for MSE, but infrequent changes work for PSD)
+
+	Metaphor/narratives used to increase complexity: 
+	- imagined the bit is suffering from pain, so created breathing behaviours with ceases and irregular fluctuation
+	- used music instruments as metaphors: expected drums to be more complex than trumpet
+
+
+
