@@ -69,7 +69,7 @@ class App extends Component {
   start() {
 
     //randomize behaviour order:
-    var order = [0,7,20];
+    var order = [0,19,20];
     var temp = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18];
 
     while(temp.length > 0){

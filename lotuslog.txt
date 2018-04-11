@@ -1,0 +1,26 @@
+
+> hello-world@0.1.0 start /Users/Lo/Documents/Lo/Developer/ComplexityInterface
+> node server.js & react-scripts start 
+
+Started back end...
+1491551758911 Board Looking for connected device  
+Starting the development server...
+
+You connected. Congrats.
+Compiled with warnings.
+
+Warning in ./src/App.js
+
+/Users/Lo/Documents/Lo/Developer/ComplexityInterface/src/App.js
+    6:8  warning  'logo' is defined but never used             no-unused-vars
+   14:5  warning  'inst_3' is assigned a value but never used  no-unused-vars
+  101:7  warning  The function binding is unnecessary          no-extra-bind
+
+✖ 3 problems (0 errors, 3 warnings)
+
+
+You may use special comments to disable some warnings.
+Use // eslint-disable-next-line to ignore the next line.
+Use /* eslint-disable */ to ignore all warnings in a file.
+You connected. Congrats.
+1
